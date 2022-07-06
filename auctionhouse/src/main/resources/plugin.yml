@@ -1,0 +1,5 @@
+name: PotPvP-Auctionhouse
+version: 1.0
+main: io.github.rysefoxx.potpvp.auctionhouse.AuctionHousePlugin
+api-version: 1.19
+author: Rysefoxx

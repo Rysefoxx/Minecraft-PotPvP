@@ -1,0 +1,5 @@
+name: PotPvP-Core
+version: 1.0
+main: io.github.rysefoxx.potpvp.core.CorePlugin
+api-version: 1.19
+author: Rysefoxx
