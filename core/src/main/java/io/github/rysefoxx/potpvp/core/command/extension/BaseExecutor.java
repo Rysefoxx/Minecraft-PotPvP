@@ -22,15 +22,17 @@ import java.util.List;
  * @author Rysefoxx | Rysefoxx#6772
  * @since 7/6/2022
  */
-@Getter
 public abstract class BaseExecutor implements CommandExecutor {
 
     private final CorePlugin plugin;
 
-    private final @NotNull ExecutionType executionType =
+    private @Getter
+    final @NotNull ExecutionType executionType =
             getClass().isAnnotationPresent(BaseExecution.class) ? getClass().getAnnotation(BaseExecution.class).type() : ExecutionType.PLAYER;
-    private final @NotNull BaseCommand baseCommand = getClass().getAnnotation(BaseCommand.class);
-    private final @Nullable Alias alias = getClass().getAnnotation(Alias.class);
+    private @Getter
+    final @NotNull BaseCommand baseCommand = getClass().getAnnotation(BaseCommand.class);
+    private @Getter
+    final @Nullable Alias alias = getClass().getAnnotation(Alias.class);
 
     private @Nullable Prefix prefix;
 
@@ -103,5 +105,9 @@ public abstract class BaseExecutor implements CommandExecutor {
             this.prefix = method.getAnnotation(Prefix.class);
             break;
         }
+    }
+
+    public @NotNull CorePlugin plugin() {
+        return this.plugin;
     }
 }

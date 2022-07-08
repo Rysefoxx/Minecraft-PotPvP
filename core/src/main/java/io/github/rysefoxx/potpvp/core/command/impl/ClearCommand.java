@@ -46,6 +46,11 @@ public class ClearCommand extends BaseExecutor {
             return;
         }
         if (args.length == 1) {
+            if (!player.hasPermission(PermissionConstants.CLEAR_TARGET)) {
+                player.sendMessage(StringConstants.NO_PERMISSION);
+                return;
+            }
+
             Player target = Bukkit.getPlayerExact(args[0]);
             if (target == null) {
                 player.sendMessage(StringConstants.PLAYER_OFFLINE);

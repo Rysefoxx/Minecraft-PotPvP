@@ -32,7 +32,6 @@ public class Injection {
                 executor = clazz.getConstructor(CorePlugin.class).newInstance(plugin);
             } catch (Exception e) {
                 plugin.logger().log(Level.SEVERE, "Could not register Command " + clazz.getSimpleName(), e);
-                e.printStackTrace();
                 continue;
             }
 

@@ -16,4 +16,7 @@ public class PrefixConstants {
     public final Component ANNOUNCEMENT = miniMessage.deserialize("<red><b>EILMELDUNG</b></red> <dark_gray>» ");
     public final Component CLEAR = miniMessage.deserialize("<green><b>CLEAR</b></green> <dark_gray>» ");
     public final Component EAT = miniMessage.deserialize("<green><b>EAT</b></green> <dark_gray>» ");
+    public final Component SPY = miniMessage.deserialize("<red><b>SPY</b></red> <dark_gray>» ");
+    public final Component TEAM_CHAT = miniMessage.deserialize("<red><b>TEAMCHAT</b></red> <dark_gray>» ");
+    public final Component FLY = miniMessage.deserialize("<b>FLY</b> <dark_gray>» ");
 }

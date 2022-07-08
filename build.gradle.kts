@@ -34,6 +34,7 @@ allprojects {
     dependencies {
         compileOnly("org.projectlombok:lombok:1.18.24")
         annotationProcessor("org.projectlombok:lombok:1.18.24")
+
         paperDevBundle("1.19-R0.1-SNAPSHOT")
     }
 }
