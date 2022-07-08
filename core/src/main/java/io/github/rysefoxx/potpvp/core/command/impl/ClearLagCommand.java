@@ -10,7 +10,7 @@ import io.github.rysefoxx.potpvp.core.command.extension.annotation.Prefix;
 import io.github.rysefoxx.potpvp.core.constant.PermissionConstants;
 import io.github.rysefoxx.potpvp.core.constant.PrefixConstants;
 import io.github.rysefoxx.potpvp.core.constant.StringConstants;
-import io.github.rysefoxx.potpvp.core.util.Utils;
+import io.github.rysefoxx.potpvp.core.manager.LagManager;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
@@ -26,40 +26,32 @@ import java.util.List;
  * @since 7/8/2022
  */
 @BaseExecution(type = ExecutionType.BOTH)
-@Alias(values = "tc")
-@BaseCommand(command = "teamchat")
-public class TeamChatCommand extends BaseExecutor {
+@Alias(values = "cl")
+@BaseCommand(command = "clearlag")
+public class ClearLagCommand extends BaseExecutor {
 
-    public TeamChatCommand(@NotNull CorePlugin plugin) {
+    public ClearLagCommand(@NotNull CorePlugin plugin) {
         super(plugin);
     }
 
     @Prefix(append = true)
     @Override
     public void trigger(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String @NotNull [] args) {
-        if (!sender.hasPermission(PermissionConstants.TEAM_CHAT)) {
+        if (!sender.hasPermission(PermissionConstants.CLEAR_LAG)) {
             sender.sendMessage(StringConstants.NO_PERMISSION);
             return;
         }
 
-        if (args.length >= 1) {
-            String message = Utils.buildMessage(args, 0);
-
-            if (message.isBlank()) {
-                sender.sendMessage(StringConstants.ERROR.append(Component.text("Bitte gib einen Text ein.", NamedTextColor.GRAY)));
-                return;
-            }
-
-            for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-                if (!onlinePlayer.hasPermission(PermissionConstants.TEAM_CHAT)) continue;
-                onlinePlayer.sendMessage(PrefixConstants.TEAM_CHAT.append(
-                        Component.text(sender.getName(), NamedTextColor.GOLD))
-                                .append(Component.text(": ", NamedTextColor.GRAY))
-                        .append(Component.text(message, NamedTextColor.WHITE)));
-            }
+        if(args.length != 1) {
+            help(sender, List.of("Clearlag <Flag> (-M, -I, -A, -AL)"));
+            return;
+        }
+        LagManager.Type type = LagManager.Type.getType(args[0]);
+        if(type == null) {
+            help(sender, List.of("Clearlag <Flag> (-M, -I, -A, -AL)"));
             return;
         }
 
-        help(sender, List.of("Teamchat <Nachricht>"));
+        plugin().getLagManager().remove(type);
     }
 }

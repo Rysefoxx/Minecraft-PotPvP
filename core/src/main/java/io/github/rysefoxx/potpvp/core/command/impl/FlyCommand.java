@@ -3,6 +3,7 @@ package io.github.rysefoxx.potpvp.core.command.impl;
 import io.github.rysefoxx.potpvp.core.CorePlugin;
 import io.github.rysefoxx.potpvp.core.command.extension.BaseExecutor;
 import io.github.rysefoxx.potpvp.core.command.extension.annotation.BaseCommand;
+import io.github.rysefoxx.potpvp.core.command.extension.annotation.Prefix;
 import io.github.rysefoxx.potpvp.core.constant.PermissionConstants;
 import io.github.rysefoxx.potpvp.core.constant.PrefixConstants;
 import io.github.rysefoxx.potpvp.core.constant.StringConstants;
@@ -27,6 +28,7 @@ public class FlyCommand extends BaseExecutor {
         super(plugin);
     }
 
+    @Prefix(append = true)
     @Override
     public void trigger(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String @NotNull [] args) {
         Player player = (Player) sender;

@@ -10,6 +10,8 @@ import io.github.rysefoxx.potpvp.core.command.extension.annotation.Prefix;
 import io.github.rysefoxx.potpvp.core.constant.PermissionConstants;
 import io.github.rysefoxx.potpvp.core.constant.PrefixConstants;
 import io.github.rysefoxx.potpvp.core.constant.StringConstants;
+import io.github.rysefoxx.potpvp.core.util.Maths;
+import io.github.rysefoxx.potpvp.core.util.PlayerUtils;
 import io.github.rysefoxx.potpvp.core.util.Utils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -25,41 +27,39 @@ import java.util.List;
  * @author Rysefoxx | Rysefoxx#6772
  * @since 7/8/2022
  */
-@BaseExecution(type = ExecutionType.BOTH)
-@Alias(values = "tc")
-@BaseCommand(command = "teamchat")
-public class TeamChatCommand extends BaseExecutor {
+@BaseCommand(command = "more")
+public class MoreCommand extends BaseExecutor {
 
-    public TeamChatCommand(@NotNull CorePlugin plugin) {
+    public MoreCommand(@NotNull CorePlugin plugin) {
         super(plugin);
     }
 
     @Prefix(append = true)
     @Override
     public void trigger(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String @NotNull [] args) {
-        if (!sender.hasPermission(PermissionConstants.TEAM_CHAT)) {
-            sender.sendMessage(StringConstants.NO_PERMISSION);
+        Player player = (Player) sender;
+        if (!player.hasPermission(PermissionConstants.MORE)) {
+            player.sendMessage(StringConstants.NO_PERMISSION);
             return;
         }
 
-        if (args.length >= 1) {
-            String message = Utils.buildMessage(args, 0);
-
-            if (message.isBlank()) {
-                sender.sendMessage(StringConstants.ERROR.append(Component.text("Bitte gib einen Text ein.", NamedTextColor.GRAY)));
+        if(args.length == 1) {
+            if(!Maths.isInteger(args[0], false)) {
+                player.sendMessage(StringConstants.PARSE_ERROR);
+                return;
+            }
+            if(PlayerUtils.emptyHand(player)) {
+                player.sendMessage(StringConstants.EMPTY_HAND);
                 return;
             }
 
-            for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-                if (!onlinePlayer.hasPermission(PermissionConstants.TEAM_CHAT)) continue;
-                onlinePlayer.sendMessage(PrefixConstants.TEAM_CHAT.append(
-                        Component.text(sender.getName(), NamedTextColor.GOLD))
-                                .append(Component.text(": ", NamedTextColor.GRAY))
-                        .append(Component.text(message, NamedTextColor.WHITE)));
-            }
+            int amount = Integer.parseInt(args[0]);
+            player.getInventory().getItemInMainHand().setAmount(amount);
+
+            player.sendMessage(PrefixConstants.MORE.append(Component.text("Du hast das Item nun " + amount + "x", NamedTextColor.GRAY)));
             return;
         }
 
-        help(sender, List.of("Teamchat <Nachricht>"));
+        help(player, List.of("More <Anzahl>"));
     }
 }

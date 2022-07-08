@@ -20,13 +20,13 @@ import java.util.Arrays;
 
 /**
  * @author Rysefoxx | Rysefoxx#6772
- * @since 7/7/2022
+ * @since 7/8/2022
  */
-@Alias(values = "cmdspy")
-@BaseCommand(command = "commandspy")
-public class CommandSpyCommand extends BaseExecutor {
+@Alias(values = "messagespy")
+@BaseCommand(command = "msgspy")
+public class MsgSpyCommand extends BaseExecutor {
 
-    public CommandSpyCommand(@NotNull CorePlugin plugin) {
+    public MsgSpyCommand(@NotNull CorePlugin plugin) {
         super(plugin);
     }
 
@@ -36,22 +36,22 @@ public class CommandSpyCommand extends BaseExecutor {
         Player player = (Player) sender;
 
         if (args.length == 0) {
-            if (!player.hasPermission(PermissionConstants.CMD_SPY_PERSONAL)) {
+            if (!player.hasPermission(PermissionConstants.MSG_SPY_PERSONAL)) {
                 player.sendMessage(StringConstants.NO_PERMISSION);
                 return;
             }
 
-            plugin().getSpyManager().toggleCommandSpy(player.getUniqueId());
+            plugin().getSpyManager().toggleMsgSpy(player.getUniqueId());
 
-            if (plugin().getSpyManager().inCommandSpy(player.getUniqueId())) {
-                player.sendMessage(PrefixConstants.SPY.append(Component.text("Du wirst nun über ausgeführte Befehle informiert.", NamedTextColor.GRAY)));
+            if (plugin().getSpyManager().inMsgSpy(player.getUniqueId())) {
+                player.sendMessage(PrefixConstants.SPY.append(Component.text("Du wirst nun über Chatverläufe informiert.", NamedTextColor.GRAY)));
                 return;
             }
-            player.sendMessage(PrefixConstants.SPY.append(Component.text("Du wirst nicht mehr über ausgeführte Befehle informiert.", NamedTextColor.GRAY)));
+            player.sendMessage(PrefixConstants.SPY.append(Component.text("Du wirst nicht mehr über Chatverläufe informiert.", NamedTextColor.GRAY)));
             return;
         }
         if (args.length == 1) {
-            if (!player.hasPermission(PermissionConstants.CMD_SPY_TARGET)) {
+            if (!player.hasPermission(PermissionConstants.MSG_SPY_TARGET)) {
                 player.sendMessage(StringConstants.NO_PERMISSION);
                 return;
             }
@@ -61,21 +61,21 @@ public class CommandSpyCommand extends BaseExecutor {
                 player.sendMessage(StringConstants.PLAYER_OFFLINE);
                 return;
             }
-            plugin().getSpyManager().toggleCommandSpy(target.getUniqueId());
+            plugin().getSpyManager().toggleMsgSpy(target.getUniqueId());
 
-            if (plugin().getSpyManager().inCommandSpy(target.getUniqueId())) {
-                target.sendMessage(PrefixConstants.SPY.append(Component.text("Du wirst nun über ausgeführte Befehle informiert.", NamedTextColor.GRAY)));
+            if (plugin().getSpyManager().inMsgSpy(target.getUniqueId())) {
+                target.sendMessage(PrefixConstants.SPY.append(Component.text("Du wirst nun über Chatverläufe informiert.", NamedTextColor.GRAY)));
                 player.sendMessage(PrefixConstants.SPY.append(Component.text(target.getName(), NamedTextColor.AQUA)
-                                .append(Component.text(" wird nun über ausgeführte Befehle informiert.", NamedTextColor.GRAY))));
+                                .append(Component.text(" wird nun über Chatverläufe informiert.", NamedTextColor.GRAY))));
                 return;
             }
-            target.sendMessage(PrefixConstants.SPY.append(Component.text("Du wirst nicht mehr über ausgeführte Befehle informiert.", NamedTextColor.GRAY)));
+            target.sendMessage(PrefixConstants.SPY.append(Component.text("Du wirst nicht mehr über Chatverläufe informiert.", NamedTextColor.GRAY)));
             player.sendMessage(PrefixConstants.SPY.append(Component.text(target.getName(), NamedTextColor.AQUA)
-                    .append(Component.text(" wird nicht mehr über ausgeführte Befehle informiert.", NamedTextColor.GRAY))));
+                    .append(Component.text(" wird nicht mehr über Chatverläufe informiert.", NamedTextColor.GRAY))));
 
             return;
         }
 
-        help(sender, Arrays.asList("Commandspy", "Commandspy <Player>"), Arrays.asList(PermissionConstants.CMD_SPY_PERSONAL, PermissionConstants.CMD_SPY_TARGET));
+        help(sender, Arrays.asList("MsgSpy", "MsgSpy <Player>"), Arrays.asList(PermissionConstants.MSG_SPY_PERSONAL, PermissionConstants.MSG_SPY_TARGET));
     }
 }

@@ -13,8 +13,17 @@ import java.util.UUID;
 public class SpyManager {
 
     private final List<UUID> commandSpy = new ArrayList<>();
+    private final List<UUID> msgSpy = new ArrayList<>();
 
-    public void toggleSpy(@NotNull UUID uuid) {
+    public void toggleMsgSpy(@NotNull UUID uuid) {
+        if (this.msgSpy.contains(uuid)) {
+            this.msgSpy.remove(uuid);
+            return;
+        }
+        this.msgSpy.add(uuid);
+    }
+
+    public void toggleCommandSpy(@NotNull UUID uuid) {
         if (this.commandSpy.contains(uuid)) {
             this.commandSpy.remove(uuid);
             return;
@@ -24,5 +33,9 @@ public class SpyManager {
 
     public boolean inCommandSpy(@NotNull UUID uuid) {
         return this.commandSpy.contains(uuid);
+    }
+
+    public boolean inMsgSpy(@NotNull UUID uuid) {
+        return this.msgSpy.contains(uuid);
     }
 }

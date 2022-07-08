@@ -2,6 +2,7 @@ package io.github.rysefoxx.potpvp.core.inject;
 
 import io.github.rysefoxx.potpvp.core.CorePlugin;
 import io.github.rysefoxx.potpvp.core.command.extension.BaseExecutor;
+import io.github.rysefoxx.potpvp.core.command.extension.annotation.AlternativeCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandMap;
 import org.bukkit.command.PluginCommand;
@@ -13,6 +14,7 @@ import org.reflections.Reflections;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.logging.Level;
 
@@ -81,6 +83,16 @@ public class Injection {
 
         if (!baseExecutor.getBaseCommand().description().isBlank())
             command.setDescription(baseExecutor.getBaseCommand().description());
+
+        for (AlternativeCommand alternativeCommand : baseExecutor.getAlternativeCommands()) {
+            PluginCommand pluginCommand = getCommand(alternativeCommand.command(), plugin);
+            pluginCommand.setExecutor(baseExecutor);
+
+            if(alternativeCommand.aliases().length > 0)
+                pluginCommand.setAliases(Arrays.asList(alternativeCommand.aliases()));
+
+            getCommandMap().register(plugin.getName(), pluginCommand);
+        }
 
 
         getCommandMap().register(plugin.getName(), command);
